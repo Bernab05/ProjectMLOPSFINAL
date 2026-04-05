@@ -9,6 +9,8 @@ on:
 env:
   PYTHON_VERSION: "3.11"
   DOCKER_IMAGE: projetmlops-api
+  # Force les actions JS à tourner sur Node.js 24 (supprime le warning de dépréciation de Node 20)
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
   # ============================================================

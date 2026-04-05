@@ -19,10 +19,10 @@ def load_model():
     sklearn.pipeline.Pipeline
         Pipeline complet prêt à l'emploi (scaler + modèle).
     """
-    print(f"[model_loader] Chargement du modèle")
+    print("[model_loader] Chargement du modèle")
     print(f"[model_loader] Fichier  : {MODEL_PATH}")
     print(f"[model_loader] Run ID   : {RUN_ID} (traçabilité)")
 
     model = joblib.load(MODEL_PATH)
-    print(f"[model_loader] Modèle chargé avec succès")
+    print("[model_loader] Modèle chargé avec succès")
     return model

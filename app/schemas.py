@@ -8,27 +8,11 @@ class LoanRequest(BaseModel):
     """Données d'entrée d'un client pour prédire le risque de défaut."""
 
     loan_amt_outstanding: float = Field(
-        ...,
-        gt=0,
-        description="Montant du prêt restant dû (en unité monétaire)"
+        ..., gt=0, description="Montant du prêt restant dû (en unité monétaire)"
     )
-    income: float = Field(
-        ...,
-        gt=0,
-        description="Revenu annuel du client"
-    )
-    years_employed: int = Field(
-        ...,
-        ge=0,
-        le=50,
-        description="Nombre d'années d'emploi (0-50)"
-    )
-    fico_score: int = Field(
-        ...,
-        ge=300,
-        le=850,
-        description="Score FICO de solvabilité (300-850)"
-    )
+    income: float = Field(..., gt=0, description="Revenu annuel du client")
+    years_employed: int = Field(..., ge=0, le=50, description="Nombre d'années d'emploi (0-50)")
+    fico_score: int = Field(..., ge=300, le=850, description="Score FICO de solvabilité (300-850)")
 
     model_config = {
         "json_schema_extra": {
@@ -36,7 +20,7 @@ class LoanRequest(BaseModel):
                 "loan_amt_outstanding": 5000.0,
                 "income": 45000.0,
                 "years_employed": 3,
-                "fico_score": 680
+                "fico_score": 680,
             }
         }
     }

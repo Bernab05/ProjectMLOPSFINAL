@@ -14,7 +14,6 @@ from .config import (
 from .model_loader import load_model
 from .schemas import HealthResponse, LoanRequest, LoanResponse
 
-
 # ============================================================
 # Initialisation de l'application
 # ============================================================
@@ -63,12 +62,16 @@ def predict(request: LoanRequest):
     """
     try:
         # Construction de l'array dans l'ordre attendu par le pipeline
-        X = np.array([[
-            request.loan_amt_outstanding,
-            request.income,
-            request.years_employed,
-            request.fico_score,
-        ]])
+        X = np.array(
+            [
+                [
+                    request.loan_amt_outstanding,
+                    request.income,
+                    request.years_employed,
+                    request.fico_score,
+                ]
+            ]
+        )
 
         # Probabilité de défaut (classe 1)
         proba = float(model.predict_proba(X)[0, 1])
