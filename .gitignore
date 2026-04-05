@@ -40,8 +40,8 @@ add_*.py
 extend_doc.py
 fix_accents.py
 
-# Frontend Streamlit (hors image Docker)
-app/streamlit_app.py
+# Streamlit est désormais inclus dans l'image Docker (intégré à FastAPI)
+# app/streamlit_app.py est versionné
 
 # Ancien requirements local de l'app (remplacé par requirements.txt à la racine)
 app/requirements_app.txt
