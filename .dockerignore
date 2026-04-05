@@ -53,8 +53,6 @@ export_model.py
 build_*.py
 reorganize*.py
 
-# Frontend Streamlit (hors image Docker)
-# L'image Docker ne sert que l'API FastAPI (uvicorn)
-# Streamlit est lancé séparément en local via `streamlit run app/streamlit_app.py`
-app/streamlit_app.py
+# Streamlit est inclus dans l'image Docker (intégré à FastAPI)
+# Seul app/requirements_app.txt reste exclu (remplacé par requirements.txt)
 app/requirements_app.txt

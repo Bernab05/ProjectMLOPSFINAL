@@ -1,12 +1,18 @@
 # ============================================================
-# Image Docker pour l'API FastAPI de prédiction de défaut de crédit
+# Image Docker pour l'API FastAPI + Frontend Streamlit
+# Prédiction de défaut de crédit (modèle XGBoost)
 # ============================================================
-# Base : Python 3.11 slim (léger mais complet)
+# Cette image contient :
+#   - FastAPI (uvicorn)    sur le port 8000 (backend API REST)
+#   - Streamlit            sur le port 8501 (frontend visuel)
+# Les deux services sont lancés en parallèle via start.sh
+# Streamlit appelle l'API FastAPI via http://localhost:8000 (même conteneur)
+# ============================================================
 FROM python:3.11-slim
 
 # Métadonnées
 LABEL maintainer="Projet MLOps DU Data Analytics PS1"
-LABEL description="API FastAPI pour la prédiction de défaut de crédit (modèle XGBoost)"
+LABEL description="API FastAPI + Streamlit pour la prédiction de défaut de crédit"
 
 # Variables d'environnement
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -26,16 +32,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copie du code applicatif et du modèle embarqué (app/model.pkl)
-# Le modèle a été préalablement exporté depuis MLflow via export_model.py
+# Copie du code applicatif (FastAPI + Streamlit + modèle pickle)
 COPY app/ ./app/
 
-# Exposition du port FastAPI
-EXPOSE 8000
+# Copie et permissions du script de démarrage combiné
+COPY start.sh ./start.sh
+RUN chmod +x ./start.sh
 
-# Vérification de santé du conteneur (health check)
-HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+# Exposition des deux ports
+EXPOSE 8000 8501
+
+# Vérification de santé du conteneur (via FastAPI)
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/')" || exit 1
 
-# Commande de démarrage
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Commande de démarrage : lance FastAPI puis Streamlit en parallèle
+CMD ["./start.sh"]
